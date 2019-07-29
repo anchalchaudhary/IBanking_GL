@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Employee Registration</title>
+<script src="validate.js"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="card mx-auto" style="width: 50rem;" >
+		
+			<div class="card-body">
+				<div class="card-header">
+   	    			<h3 class="card-title text-center ">Registration</h3>
+				</div>
+				<br/>
+				<form name="empregistration" class="center" action="EmployeeController" onsubmit="return validateEmpRegForm();" method="post">
+					<div class="form-group">
+						<label for="fname">First Name</label> 
+						<input type="text" class="form-control" id="fname" name="fname" placeholder="Enter First Name">
+					</div>
+					<div class="form-group">
+						<label for="lname">First Name</label> 
+						<input type="text" class="form-control" id="lname" name="lname" placeholder="Enter Last Name">
+					</div>
+					<div class="form-group">
+						<label for="age">Age</label> 
+						<input type="number" class="form-control" id="age" name="age" placeholder="Enter Age">
+					</div>
+					<div class="form-group">
+						<label for="gender">Gender</label> 
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="gender" id="male" value="Male">
+							<label class="form-check-label" for="male">Male</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+							<label class="form-check-label" for="female">Female</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="gender" id="other" value="other">
+							<label class="form-check-label" for="other">Other</label>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="reset" class="btn btn-danger">Reset</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
