@@ -13,78 +13,94 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.iBank.pojo.EmployeePojo;
+import com.iBank.service.EmployeeService;
+import com.iBank.service.EmployeeServiceImpl;
 
-/**
- * Servlet implementation class EmployeeController
- */
 @WebServlet("/EmployeeController")
 public class EmployeeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    
+	EmployeeService employeeService = new EmployeeServiceImpl();
+	List<EmployeePojo> empList = new ArrayList<EmployeePojo>();
+
     public EmployeeController() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html");
-		response.getWriter().append("\nWelcome to GlobalLogic");
-		response.getWriter().append("<html>Hi</html>");
+		
+		String actionClicked = request.getParameter("act");
+		String eId = request.getParameter("empId");
+		int empId = -1;
+		
+		if(eId!=null) {
+			empId = Integer.parseInt(eId);
+		}
+		EmployeeService employeeService = new EmployeeServiceImpl();
 
+		if (actionClicked != null) {
+			if (actionClicked.equals("createEmployee")) {
+				RequestDispatcher rd = request.getRequestDispatcher("employeeRegistration.html");
+				rd.forward(request, response);
+
+			} else if (actionClicked.equals("editEmployee")) {
+				EmployeePojo employeepojo = employeeService.getEmployee(empId);
+				request.setAttribute("empPojo", employeepojo);
+				RequestDispatcher rd = request.getRequestDispatcher("editEmployee.jsp");
+				rd.forward(request, response);
+
+			} else if (actionClicked.equals("deleteEmployee")) {
+				employeeService.deleteEmployee(empId);
+				getEmployeeList(request, response);
+			} else {
+				System.out.println("Action not found");
+			}			
+		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	private void getEmployeeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		empList = employeeService.listEmployee();
+		request.setAttribute("totalEmpCount", empList.size());
+
+		request.setAttribute("empListPojo", empList);
+		RequestDispatcher rd = request.getRequestDispatcher("emp.jsp");
+		rd.forward(request, response);
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		PrintWriter pr = response.getWriter();
 		pr.append("form submitted");
-		String fname = request.getParameter("fname");
-		String lname = request.getParameter("lname");
-		int age = Integer.parseInt(request.getParameter("age"));
+		String fname = request.getParameter("fname").trim();
+		String lname = request.getParameter("lname").trim();
+		int age = Integer.parseInt(request.getParameter("age").trim());
 		String gender = request.getParameter("gender");
-
-		List<EmployeePojo> empList = new ArrayList<EmployeePojo>();
+		String eId = request.getParameter("empId");
+		int empId = -1;
+		if(eId!=null)
+			empId = Integer.parseInt(eId);
 
 		EmployeePojo employeePojo = new EmployeePojo();
-		employeePojo.setFname(fname);
-		employeePojo.setLname(lname);
-		employeePojo.setAge(age);
-		employeePojo.setGender(gender);
-		empList.add(employeePojo);
 		
-		EmployeePojo employeePojo1 = new EmployeePojo();		
-		employeePojo1.setFname("Anchal");
-		employeePojo1.setLname("Chaudhary");
-		employeePojo1.setAge(22);
-		employeePojo1.setGender("Female");
-		empList.add(employeePojo1);
-		
-		EmployeePojo employeePojo2 = new EmployeePojo();
-		employeePojo2.setFname("Apoorv");
-		employeePojo2.setLname("Gupta");
-		employeePojo2.setAge(22);
-		employeePojo2.setGender("Female");
-		empList.add(employeePojo2);
-		
-		EmployeePojo employeePojo3 = new EmployeePojo();
-		employeePojo3.setFname("Divyam");
-		employeePojo3.setLname("Singh");
-		employeePojo3.setAge(22);
-		employeePojo3.setGender("Male");
-		empList.add(employeePojo3);
-		
-		request.setAttribute("empListpojo", empList);
-		request.setAttribute("employeePojo", employeePojo);
-		RequestDispatcher rd = request.getRequestDispatcher("emp.jsp");
-		rd.forward(request, response);
+		String actionclicked = request.getParameter("act");
+		if (actionclicked.equals("updateEmployee")) {
+			employeePojo.setFname(fname);
+			employeePojo.setLname(lname);
+			employeePojo.setAge(age);
+			employeePojo.setGender(gender);
+			employeePojo.setEmpId(empId);
+
+			employeeService.updateEmployee(employeePojo);
+			getEmployeeList(request, response);
+		} else if (actionclicked.equals("saveEmployee")) {
+			employeePojo.setFname(fname);
+			employeePojo.setLname(lname);
+			employeePojo.setAge(age);
+			employeePojo.setGender(gender);
+
+			employeePojo = employeeService.saveEmployee(employeePojo);
+			getEmployeeList(request, response);
+		}
 	}
 }

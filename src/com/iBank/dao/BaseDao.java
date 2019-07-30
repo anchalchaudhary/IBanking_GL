@@ -13,7 +13,7 @@ abstract public class BaseDao {
 	protected Connection con = null;
 	private Properties getProperties() throws Exception{
 		Properties properties = new Properties();
-		InputStream inputStream = new FileInputStream("C:\\Users\\anchal.chaudhary\\eclipse-workspace\\citix\\src\\resources\\config.properties");
+		InputStream inputStream = new FileInputStream("C:\\Users\\anchal.chaudhary\\eclipse-workspace\\IBanking\\src\\resources\\config.properties");
 
 		properties.load(inputStream);
 		inputStream.close();

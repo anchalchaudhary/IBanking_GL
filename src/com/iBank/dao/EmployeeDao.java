@@ -5,9 +5,13 @@ import java.util.List;
 import com.iBank.pojo.EmployeePojo;
 
 public interface EmployeeDao {
-EmployeePojo saveEmployee(EmployeePojo employeePojo);
+int saveEmployee(EmployeePojo employeePojo);
 	
 	List<EmployeePojo> listEmployee();
 	
-	EmployeePojo getEmployee(String empId);
+	EmployeePojo getEmployee(int empId);
+
+	void updateEmployee(EmployeePojo employeePojo);
+
+	void deleteEmployee(int empId);
 }

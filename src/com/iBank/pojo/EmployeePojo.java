@@ -2,9 +2,12 @@ package com.iBank.pojo;
 
 public class EmployeePojo {
 
+	private int empId;
 	private String fname;
 	private String lname;
 	private int age;
+	private String gender;
+
 	public String getFname() {
 		return fname;
 	}
@@ -29,5 +32,10 @@ public class EmployeePojo {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	private String gender;
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
 }
